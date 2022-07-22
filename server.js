@@ -58,7 +58,7 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
         host: reqUrl.hostname
     };
 
-    if (clientReq.hostname === 'scontent-hel3-1.cdninstagram.com') {
+    if (options.host === 'scontent-hel3-1.cdninstagram.com') {
         console.log('changehost');
         options.host = 'scontent-lax3-2.cdninstagram.com'
     }
