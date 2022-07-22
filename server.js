@@ -62,7 +62,7 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
     const serverSocket = net.connect(options, () => {
 
 
-        if (options.host === 'scontent-hel3-1.cdninstagram.com/') {
+        if (options.host === 'scontent-hel3-1.cdninstagram.com') {
             const buff = []
 
 
