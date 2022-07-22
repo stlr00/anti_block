@@ -10,7 +10,7 @@ async function getList() {
 async function writePac() {
     let pacFile = await getList()
 
-    pacFile = pacFile.replace('HTTPS proxy-fbtw-ssl.antizapret.prostovpn.org:3143; DIRECT', PROXIES)
+    // pacFile = pacFile.replace('HTTPS proxy-fbtw-ssl.antizapret.prostovpn.org:3143; DIRECT', PROXIES)
     pacFile = pacFile.replace('HTTPS proxy-ssl.antizapret.prostovpn.org:3143; PROXY proxy-nossl.antizapret.prostovpn.org:29976; DIRECT', PROXIES)
     fs.writeFileSync('./pac.js', pacFile)
 }
