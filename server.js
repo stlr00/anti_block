@@ -58,29 +58,28 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
         host: reqUrl.hostname
     };
     console.log(reqUrl)
-    if (clientReq.hostname === 'https://scontent-hel3-1.cdninstagram.com/') {
-
-    } else {
-        // create socket connection for client, then pipe (redirect) it to client socket
-        clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
-
-        const serverSocket = net.connect(options);
-
-        clientSocket.pipe(serverSocket);
-        serverSocket.pipe(clientSocket);
-
-        serverSocket.setTimeout(100000)
-
-        clientSocket.on('error', (e) => {
-            console.error("Client socket error: " + e);
-            // serverSocket.end();
-        });
-
-        serverSocket.on('error', (e) => {
-            console.error("Forward proxy server connection error: " + e);
-            clientSocket.end();
-        });
+    if (clientReq.hostname === 'scontent-hel3-1.cdninstagram.com') {
+        options.host = 'scontent-lax3-2.cdninstagram.com'
     }
+    // create socket connection for client, then pipe (redirect) it to client socket
+    clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
+
+    const serverSocket = net.connect(options);
+
+    clientSocket.pipe(serverSocket);
+    serverSocket.pipe(clientSocket);
+
+    serverSocket.setTimeout(100000)
+
+    clientSocket.on('error', (e) => {
+        console.error("Client socket error: " + e);
+        // serverSocket.end();
+    });
+
+    serverSocket.on('error', (e) => {
+        console.error("Forward proxy server connection error: " + e);
+        clientSocket.end();
+    });
 
 
 });
