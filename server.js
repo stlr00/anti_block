@@ -53,7 +53,6 @@ function httpOptions(clientReq, clientRes) {
 // handle https proxy requests (CONNECT method)
 proxyServer.on('connect', (clientReq, clientSocket, head) => {
     const reqUrl = url.parse('https://' + clientReq.url);
-    console.log(reqUrl)
     const options = {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
@@ -64,6 +63,13 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
     const serverSocket = net.connect(options);
 
     clientSocket.pipe(serverSocket);
+
+    if(reqUrl.hostname === 'scontent-hel3-1.cdninstagram.com') {
+        serverSocket.on('end', () => {
+            console.log('Data is out!')
+        })
+    }
+
     serverSocket.pipe(clientSocket);
 
 
