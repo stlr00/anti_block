@@ -68,7 +68,7 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
                 console.log(error)
             }
 
-            console.log(head.toString())
+            console.log(head)
 
             clientSocket.pipe(serverSocket);
             serverSocket.pipe(clientSocket);
