@@ -63,28 +63,20 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
 
 
         if (options.host === 'scontent-hel3-1.cdninstagram.com') {
-            const buff = []
 
 
-            serverSocket.on('data', (data) => {
-                console.log('data from cdn')
-                buff.push(data)
-                console.log(data.toString())
-            })
-
-
-            serverSocket.on('end', () => {
-                console.log(Buffer.concat(buff).toString())
-            })
+            clientSocket.pipe(serverSocket);
+            serverSocket.pipe(clientSocket);
+            clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
         } else {
             clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
+
+            clientSocket.pipe(serverSocket);
+            serverSocket.pipe(clientSocket);
         }
 
 
-        clientSocket.pipe(serverSocket);
-        serverSocket.pipe(clientSocket);
     });
-
 
 
     clientSocket.on('error', (e) => {
