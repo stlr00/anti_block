@@ -10,26 +10,26 @@ const {writePac} = require('./generatePac')
 
 writePac()
 
-const proxyServer = http.createServer(httpOptions);
+const server = http.createServer(httpOptions);
 
-function httpOptions(clientReq, clientRes) {
-    console.log(clientReq.socket.remoteAddress)
-    if (clientReq.url === '/proxy.pac') {
-        clientRes.writeHead(200, {
+function httpOptions(req, socket) {
+    if (req.url === '/proxy.pac') {
+        socket.writeHead(200, {
             'Content-Type': 'application/x-ns-proxy-autoconfig',
             'Cache-Control': 'max-age=86400'
         })
 
         const fileStream = fs.createReadStream('./pac.js')
 
-        fileStream.pipe(clientRes)
+        fileStream.pipe(socket)
     } else {
-        clientRes.destroy()
+        console.log(req.socket.remoteAddress)
+        socket.destroy()
     }
 }
 
-proxyServer.on('connect', (clientReq, clientSocket) => {
-    const reqUrl = url.parse('https://' + clientReq.url);
+server.on('connect', (req, clientSocket) => {
+    const reqUrl = url.parse('https://' + req.url);
     const options = {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
@@ -51,15 +51,8 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
         console.error("Forward proxy server connection error: " + e);
         clientSocket.end();
     });
-
-
 });
 
-proxyServer.on('clientError', (err, clientSocket) => {
-    console.error('Client error: ' + err);
-    clientSocket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
-});
-
-proxyServer.listen(80, () => {
+server.listen(80, () => {
     console.log('Forward proxy server started, listening on port 80');
 });
