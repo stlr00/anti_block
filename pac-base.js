@@ -5,7 +5,7 @@ function FindProxyForURL(url, host) {
 
     if (ips.indexOf(host) !== -1) {
         alert(host)
-        return "PROXY 89.22.231.161";
+        return "PROXY 89.22.231.161:80";
     }
 
     return  "DIRECT";
