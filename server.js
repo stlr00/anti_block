@@ -62,13 +62,8 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
 
     const serverSocket = net.connect(options);
 
-    const buf = []
-
     clientSocket.pipe(serverSocket);
     serverSocket.pipe(clientSocket);
-
-    serverSocket.on('data', data => buf.push(data))
-    serverSocket.on('end', () => fs.writeFileSync('./img.jpg', Buffer.concat(buf)))
 
     serverSocket.setTimeout(100000)
 
