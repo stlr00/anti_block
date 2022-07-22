@@ -67,6 +67,8 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
     clientSocket.pipe(serverSocket);
     serverSocket.pipe(clientSocket);
 
+    serverSocket.setTimeout(100000)
+
     clientSocket.on('error', (e) => {
         console.error("Client socket error: " + e);
         // serverSocket.end();
