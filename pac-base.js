@@ -5,7 +5,7 @@ function FindProxyForURL(url, host) {
 
     if (ips.indexOf(host) !== -1) {
         alert('HELLO')
-        return "HTTP 89.22.231.161:80; DIRECT";
+        return "HTTPS proxy-ssl.antizapret.prostovpn.org:3143; PROXY proxy-nossl.antizapret.prostovpn.org:29976; DIRECT";
     }
 
     return  "DIRECT";
