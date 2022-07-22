@@ -24,7 +24,7 @@ function httpOptions(clientReq, clientRes) {
             clientRes.end(data, 'utf-8');
         })
     } else {
-       clientRes.end()
+       clientRes.destroy()
     }
 }
 
