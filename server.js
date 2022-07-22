@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const url = require('url')
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({});
 const {writeFile} = require('./generatePac')
@@ -18,5 +19,8 @@ http.createServer(function (request, response) {
     }
 }).listen(80, () => {
     console.log('Server has been started')
+}).on('connect', (req, socket, head) => {
+    const reqUrl = url.parse('https://' + req.url);
+    console.log('proxy for https request: ' + reqUrl.href + '(path encrypted by ssl)');
 })
 
