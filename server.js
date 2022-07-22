@@ -58,17 +58,14 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
     };
-
-
-
     // create socket connection for client, then pipe (redirect) it to client socket
-    const serverSocket = net.connect(options, () => {
-        clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n' +
-            'Proxy-agent: Node.js-Proxy\r\n\r\n', 'utf8', () => {
-            clientSocket.pipe(serverSocket);
-            serverSocket.pipe(clientSocket);
-        });
-    });
+    const serverSocket = net.connect(options);
+
+    clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n\n')
+
+    clientSocket.pipe(serverSocket);
+    serverSocket.pipe(clientSocket);
+
 
     clientSocket.on('error', (e) => {
         console.error("Client socket error: " + e);
