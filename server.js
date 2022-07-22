@@ -62,19 +62,10 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
     const serverSocket = net.connect(options);
 
 
-    clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n\n')
-
-    const buffer = []
+    // clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n\n')
 
     clientSocket.pipe(serverSocket);
-    // serverSocket.pipe(clientSocket);
-
-    serverSocket.on('data', (data) => {
-        buffer.push(data)
-    })
-    serverSocket.on('end', () => {
-        clientSocket.write(Buffer.concat(buffer))
-    })
+    serverSocket.pipe(clientSocket);
 
 
     clientSocket.on('error', (e) => {
