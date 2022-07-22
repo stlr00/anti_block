@@ -68,12 +68,12 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
 
 
     clientSocket.on('error', (e) => {
-        console.error("Client socket error: " + e);
+        // console.error("Client socket error: " + e);
         serverSocket.end();
     });
 
     serverSocket.on('error', (e) => {
-        console.error("Forward proxy server connection error: " + e);
+        // console.error("Forward proxy server connection error: " + e);
         clientSocket.end();
     });
 
@@ -81,8 +81,7 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
 });
 
 proxyServer.on('clientError', (err, clientSocket) => {
-    console.error('Client error: ' + err);
-    clientSocket.destroy()
+    // console.error('Client error: ' + err);
     clientSocket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 
