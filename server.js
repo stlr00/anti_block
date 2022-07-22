@@ -7,7 +7,6 @@ const {writeFile} = require('./generatePac')
 writeFile()
 
 http.createServer(function (request, response) {
-    console.log(request.url)
     if (request.url === '/proxy.pac') {
         fs.readFile('./pac.js', (err, data) => {
             response.writeHead(200, {'Content-Type': 'application/x-ns-proxy-autoconfig'})
@@ -18,5 +17,7 @@ http.createServer(function (request, response) {
     }
 }).listen(80, () => {
     console.log('Server has been started')
+}).on('connection', (socket) => {
+    console.log(socket.readyState)
 });
 
