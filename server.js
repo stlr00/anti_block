@@ -13,6 +13,7 @@ writePac()
 const proxyServer = http.createServer(httpOptions);
 
 function httpOptions(clientReq, clientRes) {
+    console.log(clientReq.socket.remoteAddress)
     if (clientReq.url === '/proxy.pac') {
         clientRes.writeHead(200, {
             'Content-Type': 'application/x-ns-proxy-autoconfig',
@@ -22,7 +23,6 @@ function httpOptions(clientReq, clientRes) {
         const fileStream = fs.createReadStream('./pac.js')
 
         fileStream.pipe(clientRes)
-        fileStream.on('end', clientRes.end)
     } else {
         clientRes.destroy()
     }
@@ -43,7 +43,7 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
 
 
     clientSocket.on('error', (e) => {
-        // console.error("Client socket error: " + e);
+        console.error("Client socket error: " + e);
         serverSocket.end();
     });
 
