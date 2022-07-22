@@ -57,8 +57,9 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
     };
-    console.log(reqUrl)
+
     if (clientReq.hostname === 'scontent-hel3-1.cdninstagram.com') {
+        console.log('changehost');
         options.host = 'scontent-lax3-2.cdninstagram.com'
     }
     // create socket connection for client, then pipe (redirect) it to client socket
