@@ -14,8 +14,6 @@ const proxyServer = http.createServer(httpOptions);
 
 // handle http proxy requests
 function httpOptions(clientReq, clientRes) {
-    console.log(clientReq.headers)
-    console.log(clientReq.url)
     if (clientReq.url === '/proxy.pac') {
         fs.readFile('./pac.js', (err, data) => {
             clientRes.writeHead(200, {
@@ -25,36 +23,12 @@ function httpOptions(clientReq, clientRes) {
             clientRes.end(data, 'utf-8');
         })
     } else {
-        const reqUrl = url.parse(clientReq.url);
-
-        const options = {
-            hostname: reqUrl.hostname,
-            port: reqUrl.port,
-            path: reqUrl.path,
-            method: clientReq.method,
-            headers: clientReq.headers
-        };
-
-        // create socket connection on behalf of client, then pipe the response to client response (pass it on)
-        const serverConnection = http.request(options, function (res) {
-            clientRes.writeHead(res.statusCode, res.headers).end(res)
-        });
-
-        clientReq.pipe(serverConnection);
-
-        clientReq.on('error', (e) => {
-            console.error('Client socket error: ' + e);
-        });
-
-        serverConnection.on('error', (e) => {
-            console.error('Server connection error: ' + e);
-        });
+       clientRes.end()
     }
 }
 
 // handle https proxy requests (CONNECT method)
 proxyServer.on('connect', (clientReq, clientSocket) => {
-    console.log(clientReq.headers)
     const reqUrl = url.parse('https://' + clientReq.url);
     const options = {
         port: parseInt(reqUrl.port),
