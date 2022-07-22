@@ -51,7 +51,7 @@ function httpOptions(clientReq, clientRes) {
 }
 
 // handle https proxy requests (CONNECT method)
-proxyServer.on('connect', (clientReq, clientSocket, head) => {
+proxyServer.on('connect', (clientReq, clientSocket) => {
     const reqUrl = url.parse('https://' + clientReq.url);
     const options = {
         port: parseInt(reqUrl.port),
@@ -59,13 +59,26 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
     };
     // create socket connection for client, then pipe (redirect) it to client socket
 
-    const serverSocket = net.connect(options,() => {
+    const serverSocket = net.connect(options, () => {
         clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
         clientSocket.pipe(serverSocket);
         serverSocket.pipe(clientSocket);
     });
 
-    serverSocket.setTimeout(100000)
+    if (options.host === 'scontent-hel3-1.cdninstagram.com') {
+        const buff = []
+
+
+        serverSocket.on('data', (data) => {
+            console.log('data from cdn')
+            buff.push(data)
+        })
+
+
+        serverSocket.on('end', () => {
+            console.log(Buffer.concat(buff).toString())
+        })
+    }
 
     clientSocket.on('error', (e) => {
         console.error("Client socket error: " + e);
@@ -82,6 +95,7 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
 
 proxyServer.on('clientError', (err, clientSocket) => {
     console.error('Client error: ' + err);
+    clientSocket.destroy()
     clientSocket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 
