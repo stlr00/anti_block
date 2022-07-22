@@ -60,22 +60,10 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
     // create socket connection for client, then pipe (redirect) it to client socket
 
     const serverSocket = net.connect(options, () => {
+        clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
 
-
-        if (options.host === 'scontent-hel3-1.cdninstagram.com') {
-
-
-            clientSocket.pipe(serverSocket);
-            serverSocket.pipe(clientSocket);
-            clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
-        } else {
-            clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
-
-            clientSocket.pipe(serverSocket);
-            serverSocket.pipe(clientSocket);
-        }
-
-
+        clientSocket.pipe(serverSocket);
+        serverSocket.pipe(clientSocket);
     });
 
 
