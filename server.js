@@ -24,7 +24,7 @@ function httpOptions(req, socket) {
         fileStream.pipe(socket)
     } else {
         console.log(req.socket.remoteAddress)
-        socket.destroy()
+        socket.end()
     }
 }
 
