@@ -13,11 +13,10 @@ http.createServer(function (request, response) {
             response.end(data, 'utf-8');
         })
     } else {
+        console.log('SOMETHING NEW!!!')
         proxy.web(request, response, {target: request.url})
     }
 }).listen(80, () => {
     console.log('Server has been started')
-}).on('connection', (socket) => {
-    console.log(socket.readyState)
-});
+})
 
