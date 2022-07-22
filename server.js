@@ -64,16 +64,10 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
         clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n' +
             'Proxy-agent: Node.js-Proxy\r\n\r\n', 'utf8', (error) => {
 
-            if (error) {
-                console.log(error)
-            }
-
-            console.log(head)
-
             clientSocket.pipe(serverSocket);
             serverSocket.pipe(clientSocket);
             // creating pipes in both ends
-            serverSocket.write(head);
+            // serverSocket.write(head);
 
         });
     });
