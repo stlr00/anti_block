@@ -1,4 +1,4 @@
-var ips = '[]'
+var ips = 'meduzaio'
 
 function FindProxyForURL(url, host) {
     host = host.replace('.', '')
