@@ -12,30 +12,28 @@ writePac()
 
 const proxyServer = http.createServer(httpOptions);
 
-// handle http proxy requests
 function httpOptions(clientReq, clientRes) {
-    console.log(clientReq.socket.remoteAddress)
     if (clientReq.url === '/proxy.pac') {
-        fs.readFile('./pac.js', (err, data) => {
-            clientRes.writeHead(200, {
-                'Content-Type': 'application/x-ns-proxy-autoconfig',
-                'Cache-Control': 'max-age=86400'
-            })
-            clientRes.end(data, 'utf-8');
+        clientRes.writeHead(200, {
+            'Content-Type': 'application/x-ns-proxy-autoconfig',
+            'Cache-Control': 'max-age=86400'
         })
+
+        const fileStream = fs.createReadStream('./pac.js')
+
+        fileStream.pipe(clientRes)
+        fileStream.on('end', clientRes.end)
     } else {
-       clientRes.destroy()
+        clientRes.destroy()
     }
 }
 
-// handle https proxy requests (CONNECT method)
 proxyServer.on('connect', (clientReq, clientSocket) => {
     const reqUrl = url.parse('https://' + clientReq.url);
     const options = {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
     };
-    // create socket connection for client, then pipe (redirect) it to client socket
 
     const serverSocket = net.connect(options, () => {
         clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
@@ -50,7 +48,7 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
     });
 
     serverSocket.on('error', (e) => {
-        // console.error("Forward proxy server connection error: " + e);
+        console.error("Forward proxy server connection error: " + e);
         clientSocket.end();
     });
 
@@ -58,7 +56,7 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
 });
 
 proxyServer.on('clientError', (err, clientSocket) => {
-    // console.error('Client error: ' + err);
+    console.error('Client error: ' + err);
     clientSocket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 
