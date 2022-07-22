@@ -61,7 +61,6 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
 
     // create socket connection for client, then pipe (redirect) it to client socket
     const serverSocket = net.connect(options, () => {
-        console.log(options)
         clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n' +
             'Proxy-agent: Node.js-Proxy\r\n\r\n', 'utf8', (error) => {
             console.log(error)
