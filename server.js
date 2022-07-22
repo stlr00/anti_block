@@ -35,7 +35,6 @@ function httpOptions(clientReq, clientRes) {
 
         // create socket connection on behalf of client, then pipe the response to client response (pass it on)
         const serverConnection = http.request(options, function (res) {
-            console.log(res)
             clientRes.writeHead(res.statusCode, res.headers).end(res)
         });
 
@@ -62,9 +61,11 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
 
     // create socket connection for client, then pipe (redirect) it to client socket
     const serverSocket = net.connect(options, () => {
-        clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 Connection Established\r\n' +
-            'Proxy-agent: Node.js-Proxy\r\n' +
-            '\r\n', 'utf8', () => {
+        console.log(options)
+        clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n' +
+            'Proxy-agent: Node.js-Proxy\r\n\r\n', 'utf8', () => {
+
+            console.log(head.toString())
             // creating pipes in both ends
             serverSocket.write(head);
             serverSocket.pipe(clientSocket);
