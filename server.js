@@ -69,7 +69,7 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
 
     clientSocket.on('error', (e) => {
         console.error("Client socket error: " + e);
-        serverSocket.end();
+        // serverSocket.end();
     });
 
     serverSocket.on('error', (e) => {
