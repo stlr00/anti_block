@@ -61,7 +61,6 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
 
     const serverSocket = net.connect(options,() => {
         clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
-        serverSocket.write('HTTP/1.1 200 OK\r\n\r\n')
         clientSocket.pipe(serverSocket);
         serverSocket.pipe(clientSocket);
     });
