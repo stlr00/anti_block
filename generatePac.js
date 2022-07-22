@@ -1,20 +1,21 @@
 const fs = require("fs");
 
+const PROXIES = 'PROXY 89.22.231.161:80; HTTP 89.22.231.161:80; DIRECT'
+
 async function getList() {
-    const res = await fetch('https://reestr.rublacklist.net/api/v2/domains/json/')
-    return await res.json()
+    const res = await fetch('https://raw.githubusercontent.com/anticensority/generated-pac-scripts/master/anticensority.pac')
+    return await res.text()
 }
 
-async function writeFile() {
-    let baseFile = fs.readFileSync('./pac-base.js').toString()
-    const RKN_LIST = await getList()
+async function writePac() {
+    let pacFile = await getList()
 
-    let str = RKN_LIST.join('.')
+    const proxyString = `PROXY_STRING = "${PROXIES}";`
 
-    str = str.replaceAll('.', '').replaceAll('*', '')
-
-    // baseFile = baseFile.replace('[]', str)
-    fs.writeFileSync('./pac.js', baseFile)
+    pacFile = pacFile.replace('PROXY_STRING = TOR_PROXIES;', proxyString)
+    fs.writeFileSync('./pac.js', pacFile)
 }
 
-module.exports = {writeFile}
+writePac()
+
+module.exports = {writePac}

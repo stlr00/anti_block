@@ -2,9 +2,9 @@ const net = require('net');
 const http = require('http');
 const url = require('url');
 const fs = require("fs");
-const {writeFile} = require('./generatePac')
+const {writePac} = require('./generatePac')
 
-writeFile()
+writePac()
 
 const proxyServer = http.createServer(httpOptions);
 
@@ -12,14 +12,16 @@ const proxyServer = http.createServer(httpOptions);
 function httpOptions(clientReq, clientRes) {
     if (clientReq.url === '/proxy.pac') {
         fs.readFile('./pac.js', (err, data) => {
-            clientRes.writeHead(200, {'Content-Type': 'application/x-ns-proxy-autoconfig'})
+            clientRes.writeHead(200, {
+                'Content-Type': 'application/x-ns-proxy-autoconfig',
+                'Cache-Control': 'max-age=86400'
+            })
             clientRes.end(data, 'utf-8');
         })
     } else {
-        var reqUrl = url.parse(clientReq.url);
-        console.log('proxy for http request: ' + reqUrl.href);
+        const reqUrl = url.parse(clientReq.url);
 
-        var options = {
+        const options = {
             hostname: reqUrl.hostname,
             port: reqUrl.port,
             path: reqUrl.path,
@@ -36,30 +38,26 @@ function httpOptions(clientReq, clientRes) {
         clientReq.pipe(serverConnection);
 
         clientReq.on('error', (e) => {
-            console.log('client socket error: ' + e);
+            console.error('Client socket error: ' + e);
         });
 
         serverConnection.on('error', (e) => {
-            console.log('server connection error: ' + e);
+            console.error('Server connection error: ' + e);
         });
     }
-
-
-
 }
 
 // handle https proxy requests (CONNECT method)
 proxyServer.on('connect', (clientReq, clientSocket, head) => {
-    var reqUrl = url.parse('https://' + clientReq.url);
-    console.log('proxy for https request: ' + reqUrl.href + '(path encrypted by ssl)');
+    const reqUrl = url.parse('https://' + clientReq.url);
 
-    var options = {
+    const options = {
         port: reqUrl.port,
         host: reqUrl.hostname
     };
 
     // create socket connection for client, then pipe (redirect) it to client socket
-    var serverSocket = net.connect(options, () => {
+    const serverSocket = net.connect(options, () => {
         clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 Connection Established\r\n' +
             'Proxy-agent: Node.js-Proxy\r\n' +
             '\r\n', 'UTF-8', () => {
@@ -71,22 +69,23 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
     });
 
     clientSocket.on('error', (e) => {
-        console.log("client socket error: " + e);
+        console.error("Client socket error: " + e);
         serverSocket.end();
     });
 
     serverSocket.on('error', (e) => {
-        console.log("forward proxy server connection error: " + e);
+        console.error("Forward proxy server connection error: " + e);
         clientSocket.end();
     });
 });
 
 proxyServer.on('clientError', (err, clientSocket) => {
-    console.log('client error: ' + err);
+    console.error('Client error: ' + err);
     clientSocket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 
-proxyServer.listen(80);
+proxyServer.listen(80, () => {
+    console.log('Forward proxy server started, listening on port 80');
+});
 
-console.log('forward proxy server started, listening on port 80');
 
