@@ -14,6 +14,8 @@ const proxyServer = http.createServer(httpOptions);
 
 // handle http proxy requests
 function httpOptions(clientReq, clientRes) {
+    console.log(clientReq.headers)
+    console.log(clientReq.url)
     if (clientReq.url === '/proxy.pac') {
         fs.readFile('./pac.js', (err, data) => {
             clientRes.writeHead(200, {
