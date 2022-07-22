@@ -68,7 +68,7 @@ proxyServer.on('connect', (clientReq, clientSocket) => {
 
             serverSocket.on('data', (data) => {
                 console.log('data from cdn')
-                buff.push(data)
+                buff.push(data.toString())
             })
 
 
