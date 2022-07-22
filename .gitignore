@@ -1,3 +1,4 @@
 .idea
 pac.js
 node_modules
+.env

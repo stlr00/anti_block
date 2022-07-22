@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const PROXIES = 'PROXY 89.22.231.161:80; HTTP 89.22.231.161:80; DIRECT'
+const PROXIES = process.env.PROXY;
 
 async function getList() {
     const res = await fetch('https://cloudflare-ipfs.com/ipfs/QmXPVA3P72hMURKvCmdQmdAVRk91J1WgEqsA7HPG3szH8Q/proxy-ssl.js')

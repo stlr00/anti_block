@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/stlr00/anti_block#readme",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "http-proxy": "^1.18.1"
   },
   "devDependencies": {

@@ -2,6 +2,10 @@ const net = require('net');
 const http = require('http');
 const url = require('url');
 const fs = require("fs");
+const {config} = require('dotenv')
+
+config()
+
 const {writePac} = require('./generatePac')
 
 writePac()
