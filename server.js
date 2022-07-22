@@ -72,7 +72,7 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
             serverSocket.pipe(clientSocket);
 
             serverSocket.on('data', (data) => {
-                console.log(data)
+                console.log(data.toString())
             })
 
             // creating pipes in both ends
