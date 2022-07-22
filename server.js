@@ -61,10 +61,22 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
     // create socket connection for client, then pipe (redirect) it to client socket
     const serverSocket = net.connect(options);
 
+    serverSocket.on('data', (data) => {
+        clientSocket.write(data)
+    })
+    clientSocket.on('data', (data) => {
+        serverSocket.write(data)
+    })
+
+
     clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n\n')
 
-    clientSocket.pipe(serverSocket);
-    serverSocket.pipe(clientSocket);
+
+
+
+
+    // clientSocket.pipe(serverSocket);
+    // serverSocket.pipe(clientSocket);
 
 
     clientSocket.on('error', (e) => {
