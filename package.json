@@ -1,0 +1,27 @@
+{
+  "name": "anti_block",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pac-base.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stlr00/anti_block.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stlr00/anti_block/issues"
+  },
+  "homepage": "https://github.com/stlr00/anti_block#readme",
+  "dependencies": {
+    "http-proxy": "^1.18.1"
+  },
+  "devDependencies": {
+    "@types/http-proxy": "^1.17.9"
+  }
+}
