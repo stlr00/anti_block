@@ -58,7 +58,7 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
         host: reqUrl.hostname
     };
     // create socket connection for client, then pipe (redirect) it to client socket
-    clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n\n')
+    // clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n\n')
 
     const serverSocket = net.connect(options);
 
