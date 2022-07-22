@@ -7,6 +7,7 @@ const {writeFile} = require('./generatePac')
 writeFile()
 
 http.createServer(function (request, response) {
+    console.log(request.url)
     if (request.url === '/proxy.pac') {
         fs.readFile('./pac.js', (err, data) => {
             response.writeHead(200, {'Content-Type': 'application/x-ns-proxy-autoconfig'})
