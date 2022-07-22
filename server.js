@@ -57,25 +57,35 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
     };
-    // create socket connection for client, then pipe (redirect) it to client socket
-    clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n\r\n')
 
-    const serverSocket = net.connect(options);
+    if (clientReq.hostname === 'https://scontent-hel3-1.cdninstagram.com/') {
 
-    clientSocket.pipe(serverSocket);
-    serverSocket.pipe(clientSocket);
 
-    serverSocket.setTimeout(100000)
+    } else {
+        // create socket connection for client, then pipe (redirect) it to client socket
+        clientSocket.write('HTTP/' + clientReq.httpVersion + ' 200 OK\r\n'
+            + 'Proxy-Status: Node.js-Proxy\r\n'
+        )
 
-    clientSocket.on('error', (e) => {
-        console.error("Client socket error: " + e);
-        // serverSocket.end();
-    });
+        const serverSocket = net.connect(options);
 
-    serverSocket.on('error', (e) => {
-        console.error("Forward proxy server connection error: " + e);
-        clientSocket.end();
-    });
+        clientSocket.pipe(serverSocket);
+        serverSocket.pipe(clientSocket);
+
+        serverSocket.setTimeout(100000)
+
+        clientSocket.on('error', (e) => {
+            console.error("Client socket error: " + e);
+            // serverSocket.end();
+        });
+
+        serverSocket.on('error', (e) => {
+            console.error("Forward proxy server connection error: " + e);
+            clientSocket.end();
+        });
+    }
+
+
 });
 
 proxyServer.on('clientError', (err, clientSocket) => {
