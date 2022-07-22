@@ -8,6 +8,8 @@ config()
 
 const {writePac} = require('./generatePac')
 
+writePac()
+
 const proxyServer = http.createServer(httpOptions);
 
 // handle http proxy requests
