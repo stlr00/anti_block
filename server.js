@@ -52,6 +52,7 @@ function httpOptions(clientReq, clientRes) {
 
 // handle https proxy requests (CONNECT method)
 proxyServer.on('connect', (clientReq, clientSocket) => {
+    console.log(clientReq.headers)
     const reqUrl = url.parse('https://' + clientReq.url);
     const options = {
         port: parseInt(reqUrl.port),
