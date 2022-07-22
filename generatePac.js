@@ -13,7 +13,7 @@ async function writeFile() {
 
     str = str.replaceAll('.', '').replaceAll('*', '')
 
-    // baseFile = baseFile.replace('[]', str)
+    baseFile = baseFile.replace('[]', str)
     fs.writeFileSync('./pac.js', baseFile)
 }
 
