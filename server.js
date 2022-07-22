@@ -62,15 +62,22 @@ proxyServer.on('connect', (clientReq, clientSocket, head) => {
 
     const serverSocket = net.connect(options);
 
-    clientSocket.pipe(serverSocket);
-
-    if(reqUrl.hostname === 'scontent-hel3-1.cdninstagram.com') {
+    if (reqUrl.hostname === 'scontent-hel3-1.cdninstagram.com') {
+        serverSocket.on('data', () => {
+            console.log('Data from inst!')
+        })
         serverSocket.on('end', () => {
             console.log('Data is out!')
         })
     }
 
+
+    clientSocket.pipe(serverSocket);
     serverSocket.pipe(clientSocket);
+
+
+
+
 
 
     clientSocket.on('error', (e) => {
