@@ -3,8 +3,7 @@ const fs = require("fs");
 
 async function getList() {
     const res = await fetch('https://reestr.rublacklist.net/api/v2/domains/json/')
-    const json = await res.json()
-    return json
+    return await res.json()
 }
 
 
