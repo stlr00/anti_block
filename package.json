@@ -4,7 +4,6 @@
   "description": "",
   "main": "pac-base.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "repository": {
@@ -19,10 +18,6 @@
   },
   "homepage": "https://github.com/stlr00/anti_block#readme",
   "dependencies": {
-    "dotenv": "^16.0.1",
-    "http-proxy": "^1.18.1"
-  },
-  "devDependencies": {
-    "@types/http-proxy": "^1.17.9"
+    "dotenv": "^16.0.1"
   }
 }
