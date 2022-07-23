@@ -14,14 +14,15 @@ const server = http.createServer(httpOptions);
 
 function httpOptions(req, socket) {
     if (req.url === '/proxy.pac') {
+        const fileStream = fs.createReadStream('./pac.js')
+        fileStream.pipe(socket)
+
         socket.writeHead(200, {
             'Content-Type': 'application/x-ns-proxy-autoconfig',
             'Cache-Control': 'max-age=86400'
         })
 
-        const fileStream = fs.createReadStream('./pac.js')
 
-        fileStream.pipe(socket)
     } else {
         socket.destroy(new Error('ECONNRESET'))
     }
