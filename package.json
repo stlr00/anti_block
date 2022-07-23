@@ -4,7 +4,8 @@
   "description": "",
   "main": "pac-base.js",
   "scripts": {
-    "start": "node server.js"
+    "start:prod": "node server.js",
+    "strart:dev": "nodemon server.js --ignore pac.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,8 @@
   "homepage": "https://github.com/stlr00/anti_block#readme",
   "dependencies": {
     "dotenv": "^16.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
