@@ -12,7 +12,7 @@ async function writePac() {
 
     pacFile = pacFile.replace(
         'HTTPS proxy-fbtw-ssl.antizapret.prostovpn.org:3143; DIRECT',
-        'HTTPS proxy-ssl.antizapret.prostovpn.org:3143; HTTP proxy-nossl.antizapret.prostovpn.org:29976; DIRECT'
+        'HTTPS proxy-ssl.antizapret.prostovpn.org:3143; PROXY proxy-nossl.antizapret.prostovpn.org:29976; HTTP proxy-nossl.antizapret.prostovpn.org:29976; DIRECT'
     )
     pacFile = pacFile.replace(
         'HTTPS proxy-ssl.antizapret.prostovpn.org:3143; PROXY proxy-nossl.antizapret.prostovpn.org:29976; DIRECT',
