@@ -62,6 +62,10 @@ server.on('clientError', (err, socket) => {
     socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
 });
 
+server.on('error', (err) => {
+    console.log(err)
+})
+
 server.listen(80, () => {
     console.log('Forward proxy server started, listening on port 80');
 });
