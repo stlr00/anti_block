@@ -32,7 +32,8 @@ server.on('connect', (req, clientSocket) => {
     if (blockedIp.includes(ip)) {
         return clientSocket.end()
     }
-    console.log(clientSocket.remoteAddress)
+
+    console.log(ip)
     const reqUrl = url.parse('https://' + req.url);
     const options = {
         port: parseInt(reqUrl.port),
