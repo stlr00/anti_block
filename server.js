@@ -1,11 +1,12 @@
 import {config} from "dotenv";
-config()
 import * as http from "http";
 import * as net from "net";
 import * as url from "url";
 import * as fs from "fs";
 import {writePac} from "./generatePac.js";
 import {blockedIp} from "./blockedIp.js";
+
+config()
 
 await writePac()
 
@@ -26,22 +27,20 @@ function httpOptions(req, socket) {
 }
 
 server.on('connect', (req, clientSocket) => {
+    if (blockedIp.includes(req.url)) {
+        return clientSocket.destroy(new Error('ECONNRESET'))
+    }
+
     const reqUrl = url.parse('https://' + req.url);
-    console.log(req.url)
     const options = {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
     };
 
     const serverSocket = net.connect(options, () => {
-        if(blockedIp.includes(serverSocket.remoteAddress)) {
-            serverSocket.end()
-            clientSocket.end()
-        } else {
-            clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
-            clientSocket.pipe(serverSocket);
-            serverSocket.pipe(clientSocket);
-        }
+        clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
+        clientSocket.pipe(serverSocket);
+        serverSocket.pipe(clientSocket);
     });
 
 

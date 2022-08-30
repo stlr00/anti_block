@@ -1,3 +1,4 @@
 export const blockedIp = [
-    '119.188.210.250'
+    'yanyuapp.yijiasj.xyz:8080:443',
+    'wiocdsd.world:443',
 ]
