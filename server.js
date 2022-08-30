@@ -54,19 +54,6 @@ server.on('connect', (req, clientSocket) => {
     });
 });
 
-server.on('clientError', (err, socket) => {
-    if (err.code === 'ECONNRESET' || !socket.writable) {
-        return;
-    }
-
-    socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
-});
-
-server.on('error', (err) => {
-    console.log('error!')
-    console.log(err)
-})
-
 server.listen(80, () => {
     console.log('Forward proxy server started, listening on port 80');
 });
