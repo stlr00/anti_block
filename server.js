@@ -27,7 +27,9 @@ function httpOptions(req, socket) {
 }
 
 server.on('connect', (req, clientSocket) => {
-    if (blockedIp.includes(req.url)) {
+    const ip = clientSocket.remoteAddress.split('ffff:')[1]
+
+    if (blockedIp.includes(ip)) {
         return clientSocket.end()
     }
     console.log(clientSocket.remoteAddress)
