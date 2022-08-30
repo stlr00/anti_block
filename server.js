@@ -28,7 +28,7 @@ function httpOptions(req, socket) {
 
 server.on('connect', (req, clientSocket) => {
     if (blockedIp.includes(req.url)) {
-        return clientSocket.destroy(new Error('ECONNRESET'))
+        return clientSocket.end()
     }
     const reqUrl = url.parse('https://' + req.url);
     const options = {
@@ -63,6 +63,7 @@ server.on('clientError', (err, socket) => {
 });
 
 server.on('error', (err) => {
+    console.log('error!')
     console.log(err)
 })
 
