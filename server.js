@@ -1,5 +1,3 @@
-import {config} from "dotenv";
-config()
 import * as http from "http";
 import * as net from "net";
 import * as url from "url";

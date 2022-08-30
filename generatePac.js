@@ -1,4 +1,7 @@
 import * as fs from "fs";
+import {config} from "dotenv";
+
+config()
 
 const PROXY = process.env.PROXY;
 
