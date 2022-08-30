@@ -28,31 +28,31 @@ function httpOptions(req, socket) {
 
 server.on('connect', (req, clientSocket) => {
     if (blockedIp.includes(req.url)) {
-        return clientSocket.end()
+        clientSocket.destroy(new Error('ECONNRESET'))
+    } else {
+        const reqUrl = url.parse('https://' + req.url);
+        const options = {
+            port: parseInt(reqUrl.port),
+            host: reqUrl.hostname
+        };
+
+        const serverSocket = net.connect(options, () => {
+            clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
+            clientSocket.pipe(serverSocket);
+            serverSocket.pipe(clientSocket);
+        });
+
+
+        clientSocket.on('error', (e) => {
+            console.error("Client socket error: " + e);
+            serverSocket.end();
+        });
+
+        serverSocket.on('error', (e) => {
+            console.error("Forward proxy server connection error: " + e);
+            clientSocket.end();
+        });
     }
-
-    const reqUrl = url.parse('https://' + req.url);
-    const options = {
-        port: parseInt(reqUrl.port),
-        host: reqUrl.hostname
-    };
-
-    const serverSocket = net.connect(options, () => {
-        clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
-        clientSocket.pipe(serverSocket);
-        serverSocket.pipe(clientSocket);
-    });
-
-
-    clientSocket.on('error', (e) => {
-        console.error("Client socket error: " + e);
-        serverSocket.end();
-    });
-
-    serverSocket.on('error', (e) => {
-        console.error("Forward proxy server connection error: " + e);
-        clientSocket.end();
-    });
 });
 
 server.listen(80, () => {
