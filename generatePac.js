@@ -1,4 +1,4 @@
-const fs = require("fs");
+import * as fs from "fs";
 
 const PROXY = process.env.PROXY;
 
@@ -15,8 +15,10 @@ async function writePac() {
     //     'HTTPS 51.68.207.81:80; DIRECT'
     //     )
     pacFile = pacFile.replace(
-        'HTTPS proxy-ssl.antizapret.prostovpn.org:3143; PROXY proxy-nossl.antizapret.prostovpn.org:29976; DIRECT', PROXY)
+        'HTTPS proxy-ssl.antizapret.prostovpn.org:3143; PROXY proxy-nossl.antizapret.prostovpn.org:29976; DIRECT',
+        PROXY
+    )
     fs.writeFileSync('./pac.js', pacFile)
 }
 
-module.exports = {writePac}
+export {writePac}

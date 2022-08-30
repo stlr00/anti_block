@@ -1,14 +1,13 @@
-const net = require('net');
-const http = require('http');
-const url = require('url');
-const fs = require("fs");
-const {config} = require('dotenv')
-
+import {config} from "dotenv";
 config()
+import * as http from "http";
+import * as net from "net";
+import * as url from "url";
+import * as fs from "fs";
+import {writePac} from "./generatePac.js";
+import {blockedIp} from "./blockedIp.js";
 
-const {writePac} = require('./generatePac')
-
-writePac()
+await writePac()
 
 const server = http.createServer(httpOptions);
 
@@ -28,15 +27,21 @@ function httpOptions(req, socket) {
 
 server.on('connect', (req, clientSocket) => {
     const reqUrl = url.parse('https://' + req.url);
+
     const options = {
         port: parseInt(reqUrl.port),
         host: reqUrl.hostname
     };
 
     const serverSocket = net.connect(options, () => {
-        clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
-        clientSocket.pipe(serverSocket);
-        serverSocket.pipe(clientSocket);
+        if(blockedIp.includes(serverSocket.remoteAddress)) {
+            serverSocket.end()
+            clientSocket.end()
+        } else {
+            clientSocket.write('HTTP/1.1 200 OK\r\n\r\n')
+            clientSocket.pipe(serverSocket);
+            serverSocket.pipe(clientSocket);
+        }
     });
 
 

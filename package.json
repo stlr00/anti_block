@@ -2,7 +2,8 @@
   "name": "anti_block",
   "version": "1.0.0",
   "description": "",
-  "main": "pac-base.js",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
     "start:prod": "node server.js",
     "strart:dev": "nodemon server.js --ignore pac.js"
