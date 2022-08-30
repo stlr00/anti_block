@@ -6,7 +6,7 @@ import * as fs from "fs";
 import {writePac} from "./generatePac.js";
 import {blockedIp} from "./blockedIp.js";
 
-config()
+console.log(config())
 
 await writePac()
 
