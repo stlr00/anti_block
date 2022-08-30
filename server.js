@@ -16,7 +16,7 @@ function httpOptions(req, socket) {
         })
 
         const fileStream = fs.createReadStream('./pac.js')
-        fileStream.pipe(socket)
+        fileStream.pipe(socket, {end: true})
     } else {
         socket.destroy(new Error('ECONNRESET'))
     }
