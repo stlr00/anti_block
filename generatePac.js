@@ -17,8 +17,6 @@ async function writePac() {
     //     'HTTPS proxy-fbtw-ssl.antizapret.prostovpn.org:3143; DIRECT',
     //     'HTTPS 51.68.207.81:80; DIRECT'
     //     )
-    console.log('HERE!!!')
-    console.log(PROXY)
     pacFile = pacFile.replace(
         'HTTPS proxy-ssl.antizapret.prostovpn.org:3143; PROXY proxy-nossl.antizapret.prostovpn.org:29976; DIRECT',
         PROXY
