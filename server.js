@@ -30,6 +30,7 @@ server.on('connect', (req, clientSocket) => {
     if (blockedIp.includes(req.url)) {
         return clientSocket.end()
     }
+    console.log(req.url)
     const reqUrl = url.parse('https://' + req.url);
     const options = {
         port: parseInt(reqUrl.port),
