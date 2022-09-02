@@ -49,6 +49,6 @@ server.on('connect', (req, clientSocket) => {
     });
 });
 
-server.listen(80, () => {
+server.listen(322, () => {
     console.log('Forward proxy server started, listening on port 80');
 });
