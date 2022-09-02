@@ -3,12 +3,6 @@ import * as net from "net";
 import * as url from "url";
 import * as fs from "fs";
 import {writePac} from "./generatePac.js";
-import * as io from '@pm2/io'
-
-io.init({
-    transactions: true,
-    http: true
-})
 
 await writePac()
 
