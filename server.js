@@ -3,22 +3,24 @@ import * as net from "net";
 import * as url from "url";
 import * as fs from "fs";
 import {writePac} from "./generatePac.js";
+import {start} from "./wg_server.js";
 
+start()
 await writePac()
 
 const server = http.createServer(httpOptions);
 
-function httpOptions(req, socket) {
+function httpOptions(req, res) {
     if (req.url === '/proxy.pac') {
-        socket.writeHead(200, {
+        res.writeHead(200, {
             'Content-Type': 'application/x-ns-proxy-autoconfig',
             'Cache-Control': 'max-age=86400'
         })
 
         const fileStream = fs.createReadStream('./pac.js')
-        fileStream.pipe(socket, {end: true})
+        fileStream.pipe(res, {end: true})
     } else {
-        socket.destroy(new Error('ECONNRESET'))
+        res.destroy(new Error('ECONNRESET'))
     }
 }
 
