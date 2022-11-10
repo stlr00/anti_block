@@ -3,9 +3,9 @@ import * as net from "net";
 import * as url from "url";
 import * as fs from "fs";
 import {writePac} from "./generatePac.js";
-import {start} from "./wg_server.js";
-
-start()
+// import {start} from "./wg_server.js";
+//
+// start()
 await writePac()
 
 const server = http.createServer(httpOptions);
