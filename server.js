@@ -26,7 +26,7 @@ function httpOptions(req, res) {
 
 server.on('connect', (req, clientSocket) => {
     const ip = clientSocket.remoteAddress.split('ffff:')[1]
-    console.log(ip)
+    console.log(req.url)
     const reqUrl = url.parse('https://' + req.url);
     const options = {
         port: parseInt(reqUrl.port),
