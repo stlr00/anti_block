@@ -29,6 +29,4 @@ async function writePac() {
     fs.writeFileSync('./pac.js', pacFile)
 }
 
-writePac()
-
 export {writePac}
