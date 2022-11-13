@@ -25,15 +25,15 @@ async function writePac() {
         "HTTPS proxy-fbtw-ssl.antizapret.prostovpn.org:3143; DIRECT",
         "HTTPS proxy-fbtw-ssl.antizapret.prostovpn.org:3143; PROXY proxy-fbtw-ssl.antizapret.prostovpn.org:3143; DIRECT"
     )
-
-    pacFile= pacFile.replace(
-        'return "DIRECT";\n' +
-        '}',
-        `if (isInNet(host, "87.245.216.0", "255.255.255.128")) {
-        return 'PROXY 89.22.231.161:322; HTTP 89.22.231.161:322; DIRECT';
-    }
-    return "DIRECT";}`
-    )
+    //
+    // pacFile= pacFile.replace(
+    //     'return "DIRECT";\n' +
+    //     '}',
+    //     `if (isInNet(host, "87.245.216.0", "255.255.255.128")) {
+    //     return 'PROXY 89.22.231.161:322; HTTP 89.22.231.161:322; DIRECT';
+    // }
+    // return "DIRECT";}`
+    //)
 
     fs.writeFileSync('./pac.js', pacFile)
 }
